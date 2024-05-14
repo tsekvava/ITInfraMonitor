@@ -1,0 +1,5 @@
+CMD for Celery Worker:
+celery -A celery_worker worker --loglevel=info
+
+CMD for Celery Beat:
+celery -A celery_worker beat --loglevel=info

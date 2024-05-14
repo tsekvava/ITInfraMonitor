@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Админ Панель</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      .delete-btn {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        color: red;
+        font-size: 1.5em;
+        cursor: pointer;
+      }
+      .service-card.red {
+        border-color: rgb(250, 112, 112);
+      }
+      @keyframes blinkGreen {
+        50% {
+          background-color: #dcfbd5;
+        }
+      }
+      .blinking-green {
+        animation: blinkGreen 3s linear infinite;
+        background-color: rgb(93, 187, 93);
+      }
+      @keyframes blinkRed {
+        50% {
+          background-color: #fbdcdc;
+        }
+      }
+      .blinking-red {
+        animation: blinkRed 3s linear infinite;
+        background-color: rgb(250, 112, 112);
+      }
+      /* Добавление стилей для футера */
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .container {
+        flex: 1;
+      }
+      footer {
+        text-align: center;
+        padding: 20px 0;
+        background-color: #f8f9fa;
+        border-top: 1px solid #e7e7e7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col">
+          <h1>Услуги</h1>
+          <button id="add-service-btn" class="btn btn-primary">
+            Добавить услугу
+          </button>
+          <div id="services-container" class="mt-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Футер с кнопкой обратной связи -->
+    <footer>
+      <button
+        class="btn btn-secondary"
+        onclick="window.location.href='message.html';"
+      >
+        Обратная связь
+      </button>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        const servicesContainer = $("#services-container");
+        const addServiceBtn = $("#add-service-btn");
+        let cardCount = 0; // Счетчик для отслеживания количества карточек
+
+        addServiceBtn.click(function () {
+          const serviceName = prompt("Введите имя услуги:");
+          const serviceDescription = prompt("Введите описание услуги:");
+          if (serviceName && serviceDescription) {
+            createServiceCard(serviceName, serviceDescription);
+          }
+        });
+
+        function createServiceCard(serviceName, serviceDescription) {
+          cardCount++;
+          const colorClass =
+            cardCount % 2 === 0 ? "blinking-red red" : "blinking-green green";
+          const card = $(
+            '<div class="card mb-3 service-card ' +
+              colorClass +
+              '"><div class="card-body"><span class="delete-btn">&times;</span><h5 class="card-title">' +
+              serviceName +
+              '</h5><p class="card-text">' +
+              serviceDescription +
+              '</p><a href="./micro-services.html" class="btn btn-primary ml-2">Открыть Услугу</a><button class="btn btn-info ml-2 edit-btn">Редактировать</button></div></div>'
+          );
+          card.find(".delete-btn").click(function () {
+            card.remove();
+          });
+          card.find(".edit-btn").click(function () {
+            editServiceCard(card);
+          });
+
+          servicesContainer.append(card);
+        }
+
+        function editServiceCard(card) {
+          const newName = prompt(
+            "Введите новое имя услуги:",
+            card.find(".card-title").text()
+          );
+          const newDescription = prompt(
+            "Введите новое описание услуги:",
+            card.find(".card-text").text()
+          );
+          if (newName && newDescription) {
+            card.find(".card-title").text(newName);
+            card.find(".card-text").text(newDescription);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
